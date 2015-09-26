@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+
+    <!--
+        Passen Sie die Inhaltssicherheitsrichtlinie im META-Tag unten nach Bedarf an. Fügen Sie "default-src" die Option "unsafe-inline" hinzu, um Inline-JavaScript zu aktivieren.
+        Details finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=617521".
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <title>MealReviewerFinal</title>
+
+    <!-- MealReviewerFinal-Verweise -->
+    <link href="css/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+    <!-- Start of first page: #one -->
+    <div data-role="page" id="one">
+        <div data-role="header">
+            <h1>Meal Reviewer</h1>
+        </div>
+
+        <div data-role="content">
+            <form>
+                <input id="filter-for-listview" data-type="search" placeholder="Type to search...">
+            </form>
+            <ul data-role="listview" data-inset="true" data-filter="true" data-input="#filter-for-listview">
+                <li><a href="#two" data-transition="slide">Currywurst mit Pommes</a></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    <div data-role="page" id="two" data-theme="a">
+        <div data-role="header">
+            <a href='#one' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
+            <h1>Meal Details</h1>
+        </div>
+
+        <div data-role="content">
+            <input id="btnTakePhoto" type="button" value="Take a Photo" />
+            <p id="mealPhoto"></p>
+        </div>
+    </div>
+    <!-- Cordova-Verweis, wird Ihrer App beim Erstellen hinzugefügt. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+
+    <script src="scripts/index.js"></script>
+</body>
+</html>
