@@ -16,28 +16,17 @@
 
         document.getElementById("btnTakePhoto").onclick = function () {
             if (!navigator.camera) {
-                app.showAlert("Camera API not supported", "Error");
+                alert("Camera API not supported", "Error");
                 return;
             }
-            var options = {
-                quality: 50,
-                destinationType: Camera.DestinationType.DATA_URL,
-                sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
-                encodingType: 0     // 0=JPG 1=PNG
-            };
+
 
             navigator.camera.getPicture(
                 function (imageUrl) {
                     var lastPhotoContainer = document.getElementById("mealPhoto");
                     lastPhotoContainer.innerHTML = "<img src ='" + imageUrl + "' style='width: 75%;' />";
-                },
-                function () {
-                    app.showAlert('Error taking picture', 'Error');
-                },
-                options);
-
-            return false;
-        }
+                }, null, null);
+        };
     };
 
     function onPause() {
