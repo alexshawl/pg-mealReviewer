@@ -18,7 +18,7 @@
             navigator.camera.getPicture(
                 function (imageUri) {
                     var lastPhotoContainer = document.getElementById("mealPhoto");
-                    lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 20%;' />";
+                    lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 25%;' />";
                 }, null, null);
         };
     };
