@@ -15,16 +15,10 @@
         console.log(navigator.camera);
 
         document.getElementById("btnTakePhoto").onclick = function () {
-            if (!navigator.camera) {
-                alert("Camera API not supported", "Error");
-                return;
-            }
-
-
             navigator.camera.getPicture(
-                function (imageUrl) {
+                function (imageUri) {
                     var lastPhotoContainer = document.getElementById("mealPhoto");
-                    lastPhotoContainer.innerHTML = "<img src ='" + imageUrl + "' style='width: 75%;' />";
+                    lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 20%;' />";
                 }, null, null);
         };
     };
