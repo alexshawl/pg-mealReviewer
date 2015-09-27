@@ -1,78 +1,35 @@
-﻿var pictureSource; // picture source
-var destinationType; // sets the format of returned value
-// Wait for device API libraries to load
-//
-document.addEventListener("deviceready", onDeviceReady, false);
-// device APIs are available
-//
+﻿// Eine Einführung zur leeren Vorlage finden Sie in der folgenden Dokumentation:
+// http://go.microsoft.com/fwlink/?LinkID=397704
+// So debuggen Sie Code beim Seitenladen in Ripple oder auf Android-Geräten/-Emulatoren: Starten Sie die App, legen Sie Haltepunkte fest, 
+// und führen Sie dann "window.location.reload()" in der JavaScript-Konsole aus.
+(function () {
+    "use strict";
 
-function onDeviceReady() {
-    pictureSource = navigator.camera.PictureSourceType;
-    destinationType = navigator.camera.DestinationType;
-}
-// Called when a photo is successfully retrieved
-//
+    document.addEventListener('deviceready', onDeviceReady.bind(this), false);
 
-function onPhotoDataSuccess(imageURI) {
-    // Uncomment to view the base64-encoded image data
-    console.log(imageURI);
-    // Get image handle
-    //
-    var cameraImage = document.getElementById('image');
-    // Unhide image elements
-    //
-    cameraImage.style.display = 'block';
-    // Show the captured photo
-    // The inline CSS rules are used to resize the image
-    //
-    cameraImage.src = imageURI;
-}
-// Called when a photo is successfully retrieved
-//
+    function onDeviceReady() {
+        // Verarbeiten der Cordova-Pause- und -Fortsetzenereignisse
+        document.addEventListener('pause', onPause.bind(this), false);
+        document.addEventListener('resume', onResume.bind(this), false);
+        // TODO: Cordova wurde geladen. Führen Sie hier eine Initialisierung aus, die Cordova erfordert.
+        console.log(navigator.camera);
 
-function onPhotoURISuccess(imageURI) {
-    // Uncomment to view the image file URI
-    console.log(imageURI);
-    // Get image handle
-    //
-    var galleryImage = document.getElementById('image');
-    // Unhide image elements
-    //
-    galleryImage.style.display = 'block';
-    // Show the captured photo
-    // The inline CSS rules are used to resize the image
-    //
-    galleryImage.src = imageURI;
-}
-// A button will call this function
-//
+        document.getElementById("btnTakePhoto").onclick = function () {
+            navigator.camera.getPicture(
+                function (imageUri) {
+                    var lastPhotoContainer = document.getElementById("mealPhoto");
+                    lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 25%;' />";
+                }, null, null);
+        };
+    };
 
-function capturePhoto() {
-    // Take picture using device camera and retrieve image as base64-encoded string
-    navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
-        quality: 30,
-        targetWidth: 600,
-        targetHeight: 600,
-        destinationType: destinationType.FILE_URI,
-        saveToPhotoAlbum: true
-    });
-}
-// A button will call this function
-//
+    function onPause() {
+        // TODO: Diese Anwendung wurde ausgesetzt. Speichern Sie hier den Anwendungszustand.
+    };
 
-function getPhoto(source) {
-    // Retrieve image file location from specified source
-    navigator.camera.getPicture(onPhotoURISuccess, onFail, {
-        quality: 30,
-        targetWidth: 600,
-        targetHeight: 600,
-        destinationType: destinationType.FILE_URI,
-        sourceType: source
-    });
-}
-// Called if something bad happens.
-//
+    function onResume() {
+        // TODO: Diese Anwendung wurde erneut aktiviert. Stellen Sie hier den Anwendungszustand wieder her.
+    };
 
-function onFail(message) {
-    //alert('Failed because: ' + message);
-}
+
+})();
