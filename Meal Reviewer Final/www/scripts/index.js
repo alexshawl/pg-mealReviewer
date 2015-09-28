@@ -1,4 +1,5 @@
 ﻿// TODO: Speicherlogik nutzen wie in http://jsfiddle.net/dmftLt40/
+// - Menü bei Klick auf Menü Buttun (Android)
 
 var destinationType;
 
