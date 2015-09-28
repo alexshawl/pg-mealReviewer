@@ -8,10 +8,11 @@ var destinationType;
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
     document.getElementById("btnTakePhoto").onclick = function () {
         navigator.camera.getPicture(onCameraSuccess, onCameraFail, {
-            quality: 50,
+            quality: 75,
             destinationType: destinationType.FILE_URI,
             saveToPhotoAlbum: true,
-            encodingType: navigator.camera.EncodingType.PNG
+            correctOrientation: true,
+            encodingType: navigator.camera.EncodingType.JPEG
         });
     };
     document.getElementById("btnAddLocation").onclick = function () {
