@@ -1,31 +1,33 @@
 ﻿// TODO: Speicherlogik nutzen wie in http://jsfiddle.net/dmftLt40/
 
+var destinationType;
 
 (function () {
     "use strict";
 
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
-
+    document.getElementById("btnTakePhoto").onclick = function () {
+        navigator.camera.getPicture(onCameraSuccess, onCameraFail, {
+            quality: 50,
+            destinationType: destinationType.FILE_URI,
+            saveToPhotoAlbum: true,
+            encodingType: navigator.camera.EncodingType.PNG
+        });
+    };
+    document.getElementById("btnAddLocation").onclick = function () {
+        addLocation();
+    };
     function onDeviceReady() {
         // Verarbeiten der Cordova-Pause- und -Fortsetzenereignisse
         document.addEventListener('pause', onPause.bind(this), false);
         document.addEventListener('resume', onResume.bind(this), false);
-        // TODO: Cordova wurde geladen. Führen Sie hier eine Initialisierung aus, die Cordova erfordert.
-        console.log("Camera-->" + navigator.camera);
-        console.log("Location-->" + navigator.geolocation);
 
-        document.getElementById("btnTakePhoto").onclick = function () {
-            navigator.camera.getPicture(
-                function (imageUri) {
-                    var lastPhotoContainer = document.getElementById("restaurantPhoto");
-                    console.log("Bild geändert: -> " + imageUri);
-                    lastPhotoContainer.src = imageUri;
-                    // lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 25%;' />";
-                }, null, null);
-        };
-        document.getElementById("btnAddLocation").onclick = function () {
-            addLocation();
-        };
+        // Kamera
+        console.log("Camera-->" + navigator.camera);
+        destinationType = navigator.camera.DestinationType;
+
+        //Location
+        console.log("Location-->" + navigator.geolocation);
     };
 
     function onPause() {
@@ -35,6 +37,17 @@
     function onResume() {
         // TODO: Diese Anwendung wurde erneut aktiviert. Stellen Sie hier den Anwendungszustand wieder her.
     };
+
+    function onCameraSuccess(imageData) {
+        var lastPhotoContainer = document.getElementById("restaurantPhoto");
+        console.log("Bild geändert: -> " + imageData);
+        lastPhotoContainer.src = imageData;
+        // lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 25%;' />";
+    }
+
+    function onCameraFail(message) {
+        alert("Camera failure: " + message);
+    }
 
     function addLocation() {
         console.log('addLocation');
@@ -56,9 +69,6 @@
             });
         return false;
     };
-
-
-
 })();
 
 /**
