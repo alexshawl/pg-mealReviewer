@@ -16,8 +16,14 @@
 
 </head>
 <body>
-    <!-- Home View -->
-    <div data-role="page" id="home">
+    <!-- Meal Reviewer Home View -->
+    <div data-role="page" id="mealHome">
+        <div data-role="navbar" data-iconpos="left">
+            <ul>
+                <li><a href="#mealHome" data-icon="home" class="ui-btn-active">Meal Reviewer</a></li>
+                <li><a href="#stuffHome" data-icon="gear">More Stuff</a></li>
+            </ul>
+        </div>
         <div data-role="header">
             <h1>Meal Reviewer</h1>
         </div>
@@ -35,7 +41,7 @@
     <!-- Restaurant View -->
     <div data-role="page" id="restaurant" data-theme="a">
         <div data-role="header">
-            <a href='#home' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
+            <a href='#mealHome' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
             <h1>Restaurant Details</h1>
         </div>
 
@@ -60,7 +66,7 @@
     <!-- Meal view-->
     <div data-role="page" id="meal" data-theme="a">
         <div data-role="header">
-            <a href='#home' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
+            <a href='#mealHome' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
             <h1>Meal Details</h1>
         </div>
         <div data-role="content">
@@ -80,6 +86,23 @@
             <!-- map loads here... -->
         </div>
     </div>
+
+    <!-- More Stuff Home View-->
+    <div data-role="page" id="stuffHome" data-theme="a">
+        <div data-role="navbar" data-iconpos="left">
+            <ul>
+                <li><a href="#mealHome" data-icon="home">Meal Reviewer</a></li>
+                <li><a href="#stuffHome" data-icon="gear" class="ui-btn-active">More Stuff</a></li>
+            </ul>
+        </div>
+        <div data-role="header">
+            <h1>More Stuff</h1>
+        </div>
+        <div data-role="content">
+            <!-- TODO -->
+        </div>
+    </div>
+
 
     <!-- Cordova-Verweis, wird Ihrer App beim Erstellen hinzugefügt. -->
     <script src="cordova.js"></script>
