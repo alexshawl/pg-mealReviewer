@@ -7,29 +7,26 @@ var destinationType;
     "use strict";
 
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
-    document.getElementById("btnTakePhoto").onclick = function () {
-        navigator.camera.getPicture(onCameraSuccess, onCameraFail, {
-            quality: 75,
-            destinationType: destinationType.FILE_URI,
-            saveToPhotoAlbum: true,
-            correctOrientation: true,
-            encodingType: navigator.camera.EncodingType.JPEG
-        });
-    };
-    document.getElementById("btnAddLocation").onclick = function () {
-        addLocation();
-    };
+
     function onDeviceReady() {
         // Verarbeiten der Cordova-Pause- und -Fortsetzenereignisse
         document.addEventListener('pause', onPause.bind(this), false);
         document.addEventListener('resume', onResume.bind(this), false);
 
         // Kamera
-        console.log("Camera-->" + navigator.camera);
         destinationType = navigator.camera.DestinationType;
+        if (!navigator.camera) {
+            alert("Camera Failure");
+        }
+        document.getElementById("btnTakePhoto").onclick = function () {
+            handleCamera();
+        }
 
         //Location
-        console.log("Location-->" + navigator.geolocation);
+        document.getElementById("btnAddLocation").onclick = function () {
+            addLocation();
+        };
+
     };
 
     function onPause() {
@@ -40,16 +37,26 @@ var destinationType;
         // TODO: Diese Anwendung wurde erneut aktiviert. Stellen Sie hier den Anwendungszustand wieder her.
     };
 
+    function handleCamera() {
+        alert("Launching Camera");
+        navigator.camera.getPicture(onCameraSuccess, onCameraFail, {
+            quality: 75,
+            destinationType: destinationType.FILE_URI,
+            saveToPhotoAlbum: true,
+            correctOrientation: true,
+            encodingType: navigator.camera.EncodingType.JPEG
+        });
+    };
     function onCameraSuccess(imageData) {
         var lastPhotoContainer = document.getElementById("restaurantPhoto");
         console.log("Bild geändert: -> " + imageData);
         lastPhotoContainer.src = imageData;
         // lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 25%;' />";
-    }
+    };
 
     function onCameraFail(message) {
         alert("Camera failure: " + message);
-    }
+    };
 
     function addLocation() {
         console.log('addLocation');
