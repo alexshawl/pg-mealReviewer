@@ -22,6 +22,7 @@
             <ul>
                 <li><a href="#mealHome" data-icon="home" class="ui-btn-active">Meal Reviewer</a></li>
                 <li><a href="#stuffHome" data-icon="gear">More Stuff</a></li>
+                <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close</a></li>
             </ul>
         </div>
         <div data-role="header">
@@ -47,13 +48,19 @@
 
         <div data-role="content">
             <ul data-role="listview" id="restaurant-data">
-                <img id="restaurantPhoto" src="images/noimage.gif" style="float:left;margin:10px;width:25%;" />
+                <img id="restaurantPhoto" src="" style="float:left;margin:10px;width:25%;" />
                 <li>ZF Casino Werk 1</li>
-                <li><a href="#map-page" data-transition="slide">Show on Map</a></li>
-                <li><span id="location"></span></li>
-                <input id="btnTakePhoto" type="button" value="Change Photo" />
-                <button class="ui-btn" id="btnAddLocation">Add current Location</button>
+                <li><span id="locationLong">Location Longitude:</span></li>
+                <li><span id="locationLat">Location Latitude:</span></li>
             </ul>
+            <a class="ui-btn" href="#map-page" data-transition="slide">Show on Map</a>
+            <button class="ui-btn" id="btnUpdateLocation">Update Location</button>
+            <button class="ui-btn" id="btnDelLocation">Delete Location</button>
+            <button class="ui-btn" id="btnTakePhoto">Change Photo</button>
+            <button class="ui-btn" id="btnDelPhoto">Delete Photo</button>
+            <div class="ui-bar ui-bar-a">
+                <h4>Available Meals:</h4>
+            </div>
             <form>
                 <input id="filter-for-listview" data-type="search" placeholder="Search for a meal...">
             </form>
@@ -93,6 +100,7 @@
             <ul>
                 <li><a href="#mealHome" data-icon="home">Meal Reviewer</a></li>
                 <li><a href="#stuffHome" data-icon="gear" class="ui-btn-active">More Stuff</a></li>
+                <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close</a></li>
             </ul>
         </div>
         <div data-role="header">

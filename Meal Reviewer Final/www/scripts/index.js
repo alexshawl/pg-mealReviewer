@@ -1,4 +1,5 @@
 ﻿// TODO: Speicherlogik nutzen wie in http://jsfiddle.net/dmftLt40/
+// location fertig machen
 // - Menü bei Klick auf Menü Buttun (Android)
 
 var destinationType;
@@ -21,11 +22,20 @@ var destinationType;
         document.getElementById("btnTakePhoto").onclick = function () {
             handleCamera();
         }
+        document.getElementById("btnDelPhoto").onclick = function () {
+            window.localStorage.removeItem("photo1");
+            refreshPhoto();
+        }
 
         //Location
-        document.getElementById("btnAddLocation").onclick = function () {
-            addLocation();
+        document.getElementById("btnUpdateLocation").onclick = function () {
+            updateLocation();
         };
+        document.getElementById("btnDelLocation").onclick = function () {
+            window.localStorage.removeItem("locLat1");
+            window.localStorage.removeItem("locLong1");
+            refreshLocation();
+        }
 
     };
 
@@ -38,7 +48,7 @@ var destinationType;
     };
 
     function handleCamera() {
-        alert("Launching Camera");
+        //alert("Launching Camera");
         navigator.camera.getPicture(onCameraSuccess, onCameraFail, {
             quality: 75,
             destinationType: destinationType.FILE_URI,
@@ -51,26 +61,32 @@ var destinationType;
         var lastPhotoContainer = document.getElementById("restaurantPhoto");
         console.log("Bild geändert: -> " + imageData);
         lastPhotoContainer.src = imageData;
-        // lastPhotoContainer.innerHTML = "<img src ='" + imageUri + "' style='width: 25%;' />";
+
+        // Pfad des Fotos speichern
+        window.localStorage.setItem("photo1", imageData);
+
     };
 
     function onCameraFail(message) {
         alert("Camera failure: " + message);
     };
 
-    function addLocation() {
-        console.log('addLocation');
+
+    function updateLocation() {
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                document.getElementById("location").innerHTML = position.coords.latitude + " , " + position.coords.longitude;
-                alert('Latitude: ' + position.coords.latitude + '\n' +
-           'Longitude: ' + position.coords.longitude + '\n' +
-           'Altitude: ' + position.coords.altitude + '\n' +
-           'Accuracy: ' + position.coords.accuracy + '\n' +
-           'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-           'Heading: ' + position.coords.heading + '\n' +
-           'Speed: ' + position.coords.speed + '\n' +
-           'Timestamp: ' + position.timestamp + '\n');
+                localStorage.setItem("locLat1", position.coords.latitude);
+                localStorage.setItem("locLong1", position.coords.longitude);
+                refreshLocation();
+                //    document.getElementById("location").innerHTML = position.coords.latitude + " , " + position.coords.longitude;
+                /* alert('Latitude: ' + position.coords.latitude + '\n' +
+            'Longitude: ' + position.coords.longitude + '\n' +
+            'Altitude: ' + position.coords.altitude + '\n' +
+            'Accuracy: ' + position.coords.accuracy + '\n' +
+            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+            'Heading: ' + position.coords.heading + '\n' +
+            'Speed: ' + position.coords.speed + '\n' +
+            'Timestamp: ' + position.timestamp + '\n');*/
 
             },
             function (error) {
@@ -81,6 +97,53 @@ var destinationType;
 })();
 
 /**
+Gespeichertes Bild laden
+*/
+$(document).on("pageinit", "#restaurant", function () {
+    refreshPhoto();
+});
+function refreshPhoto() {
+    var currentPhoto = document.getElementById("restaurantPhoto");
+    var savedPhoto = window.localStorage.getItem("photo1");
+
+    //Wenn es ein gespeichertes Foto gibt, dieses laden
+    if (savedPhoto != null) {
+        currentPhoto.src = window.localStorage.getItem("photo1");
+    } else { // Ansonsten "noimage" Foto anzeigen
+        currentPhoto.src = "images/noimage.gif"
+    }
+};
+
+function refreshLocation() {
+    var currentLocLat = document.getElementById("locationLat");
+    var currentLocLong = document.getElementById("locationLong");
+    var savedLocLat = window.localStorage.getItem("locLat1");
+    var savedLocLong = window.localStorage.getItem("locLong1");
+
+    if (savedLocLat != null) {
+        currentLocLat.innerHTML = "Latitude=" + savedLocLat;
+    } else { // Ansonsten "noimage" Foto anzeigen
+        currentLocLat.innerHTML = "No Location Data";
+    }
+    if (savedLocLong != null) {
+        currentLocLong.innerHTML = "Longitude=" + savedLocLong;
+    } else { // Ansonsten "noimage" Foto anzeigen
+        currentLocLong.innerHTML = "No Location Data";
+    }
+};
+
+
+
+
+/**
+Gespeichertee Location laden
+*/
+$(document).on("pageinit", "#restaurant", function () {
+    refreshLocation();
+});
+
+
+/**
 Google Maps
 */
 $(document).on("pageinit", "#map-page", function () {
@@ -89,11 +152,12 @@ $(document).on("pageinit", "#map-page", function () {
     if (navigator.geolocation) {
         function success(pos) {
             // Location found, show map with these coordinates
-            drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+            drawMap(new google.maps.LatLng(window.localStorage.getItem("locLat1"), window.localStorage.getItem("locLong1")));
         }
 
         function fail(error) {
-            drawMap(defaultLatLng);  // Failed to find location, show default map
+            alert("No Location Data");
+            //  drawMap(defaultLatLng);  // Failed to find location, show default map
         }
 
         // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
