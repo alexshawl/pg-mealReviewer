@@ -22,7 +22,7 @@
             <ul>
                 <li><a href="#mealHome" data-icon="home" class="ui-btn-active">Meal Reviewer</a></li>
                 <li><a href="#stuffHome" data-icon="gear">More Stuff</a></li>
-                <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close</a></li>
+                <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close App</a></li>
             </ul>
         </div>
         <div data-role="header">
@@ -53,11 +53,11 @@
                 <li><span id="locationLong">Location Longitude:</span></li>
                 <li><span id="locationLat">Location Latitude:</span></li>
             </ul>
-            <a class="ui-btn" href="#map-page" data-transition="slide">Show on Map</a>
-            <button class="ui-btn" id="btnUpdateLocation">Update Location</button>
-            <button class="ui-btn" id="btnDelLocation">Delete Location</button>
-            <button class="ui-btn" id="btnTakePhoto">Change Photo</button>
-            <button class="ui-btn" id="btnDelPhoto">Delete Photo</button>
+            <a class="ui-btn ui-icon-navigation" id="btnShowMap" href="#map-page" data-transition="slide">Show on Map</a>
+            <button class="ui-btn ui-icon-location ui-btn-icon-left" id="btnUpdateLocation">Update Location</button>
+            <button class="ui-btn ui-icon-delete ui-btn-icon-left" id="btnDelLocation">Delete Location</button>
+            <button class="ui-btn ui-icon-camera ui-btn-icon-left" id="btnTakePhoto">Change Photo</button>
+            <button class="ui-btn ui-icon-delete ui-btn-icon-left" id="btnDelPhoto">Delete Photo</button>
             <div class="ui-bar ui-bar-a">
                 <h4>Available Meals:</h4>
             </div>
@@ -89,6 +89,7 @@
             <a href='#restaurant' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
             <h1>Restaurant Location</h1>
         </div>
+        <span id="locErrArea"></span>
         <div role="main" class="ui-content" id="map-canvas">
             <!-- map loads here... -->
         </div>
@@ -100,14 +101,47 @@
             <ul>
                 <li><a href="#mealHome" data-icon="home">Meal Reviewer</a></li>
                 <li><a href="#stuffHome" data-icon="gear" class="ui-btn-active">More Stuff</a></li>
-                <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close</a></li>
+                <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close App</a></li>
             </ul>
         </div>
         <div data-role="header">
             <h1>More Stuff</h1>
         </div>
         <div data-role="content">
-            <!-- TODO -->
+            <div class="ui-bar ui-bar-a">
+                <h4>Battery Status</h4>
+            </div>
+            <label id="pluggedStatus"></label>
+            <div class="ui-bar ui-bar-a">
+                <h4>Move Volumebuttons to slide</h4>
+            </div>
+            <form>
+                <input type="range" name="slider-2" id="slider-2" data-highlight="true" min="0" max="1" step="1" value="1">
+            </form>
+            <a class="ui-btn" id="btnShowShakeTest" href="#shakeHome" data-transition="slide">Shake Test</a>
+            <a class="ui-btn" id="btnShowShakeTest" href="#mediaHome" data-transition="slide">Media/Sound Test </a>
+        </div>
+    </div>
+
+    <!-- Shake Test Page-->
+    <div data-role="page" id="shakeHome" data-theme="a">
+        <div data-role="header">
+            <a href='#stuffHome' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
+            <h1>Shake Tester</h1>
+        </div>
+        <div data-role="content">
+            <center><h4>Shake the device!</h4></center>
+        </div>
+    </div>
+
+    <!-- Media Test Page-->
+    <div data-role="page" id="mediaHome" data-theme="a">
+        <div data-role="header">
+            <a href='#stuffHome' class='ui-btn-left' data-transition='slide' data-direction='reverse'>Back</a>
+            <h1>Media Tester</h1>
+        </div>
+        <div data-role="content">
+            <center><h4>Drück mich :D</h4></center>
         </div>
     </div>
 
