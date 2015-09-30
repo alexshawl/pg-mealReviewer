@@ -193,10 +193,7 @@ $(document).on("pageinit", "#stuffHome", function () {
         lastPhotoContainer1.src = "images/grusel.png";
         shake.stopWatch();
     };
-
     shake.startWatch(onShake, 30);
-
-
 
     function onBatteryStatus(info) {
         var status;
@@ -229,6 +226,24 @@ $(document).on("pageinit", "#stuffHome", function () {
     function onBackKeyDown() {
         alert("Back button pressed");
     }
+
+    function checkConnection() {
+        var networkState = navigator.connection.type;
+
+        var states = {};
+        states[Connection.UNKNOWN] = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI] = 'WiFi connection';
+        states[Connection.CELL_2G] = 'Cell 2G connection';
+        states[Connection.CELL_3G] = 'Cell 3G connection';
+        states[Connection.CELL_4G] = 'Cell 4G connection';
+        states[Connection.CELL] = 'Cell generic connection';
+        states[Connection.NONE] = 'No network connection';
+
+        document.getElementById("networkStatus").innerHTML = "The device is connected via: <b>" + states[networkState] + "</b>";
+    }
+
+    checkConnection();
 
 });
 
