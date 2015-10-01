@@ -21,7 +21,7 @@
         <div data-role="navbar" data-iconpos="left">
             <ul>
                 <li><a href="#mealHome" data-icon="home" class="ui-btn-active">Meal Reviewer</a></li>
-                <li><a href="#stuffHome" data-icon="gear">More Stuff</a></li>
+                <li><a href="#stuffHome" data-icon="gear">Device Tester</a></li>
                 <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close App</a></li>
             </ul>
         </div>
@@ -47,12 +47,14 @@
         </div>
 
         <div data-role="content">
-            <ul data-role="listview" id="restaurant-data">
-                <img id="restaurantPhoto" src="" style="float:left;margin:10px;width:25%;" />
-                <li>ZF Casino Werk 1</li>
-                <li><span id="locationLong">Location Longitude:</span></li>
-                <li><span id="locationLat">Location Latitude:</span></li>
-            </ul>
+            <div>
+                <ul data-role="listview" id="restaurant-data">
+                    <img id="restaurantPhoto" src="" style="float:left;margin:10px;width:25%;" />
+                    <li>ZF Casino Werk 1</li>
+                    <li><span id="locationLong">Location Longitude:</span></li>
+                    <li><span id="locationLat">Location Latitude:</span></li>
+                </ul>
+            </div>
             <a class="ui-btn ui-icon-navigation" id="btnShowMap" href="#map-page" data-transition="slide">Show on Map</a>
             <button class="ui-btn ui-icon-location ui-btn-icon-left" id="btnUpdateLocation">Update Location</button>
             <button class="ui-btn ui-icon-delete ui-btn-icon-left" id="btnDelLocation">Delete Location</button>
@@ -100,12 +102,12 @@
         <div data-role="navbar" data-iconpos="left">
             <ul>
                 <li><a href="#mealHome" data-icon="home">Meal Reviewer</a></li>
-                <li><a href="#stuffHome" data-icon="gear" class="ui-btn-active">More Stuff</a></li>
+                <li><a href="#stuffHome" data-icon="gear" class="ui-btn-active">Device Tester</a></li>
                 <li><a onclick="navigator.app.exitApp()" data-icon="delete">Close App</a></li>
             </ul>
         </div>
         <div data-role="header">
-            <h1>More Stuff</h1>
+            <h1>Device Tester</h1>
         </div>
         <div data-role="content">
             <div class="ui-bar ui-bar-a">
@@ -123,7 +125,8 @@
                 <input type="range" name="slider-2" id="slider-2" data-highlight="true" min="0" max="1" step="1" value="1">
             </form>
             <a class="ui-btn" id="btnShowShakeTest" href="#shakeHome" data-transition="slide">Shake Test</a>
-            <a class="ui-btn" id="btnShowShakeTest" href="#mediaHome" data-transition="slide">Media/Sound Test </a>
+            <a class="ui-btn" id="btnShowMediaTest" href="#mediaHome" data-transition="slide">Media/Sound Test </a>
+            <a class="ui-btn" id="btnVibrateTest" data-transition="slide">Vibrate Test </a>
         </div>
     </div>
 

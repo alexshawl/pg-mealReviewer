@@ -17,42 +17,46 @@ var destinationType;
         // Kamera
         if (!navigator.camera) {
             alert("Camera Failure");
-        } else {
-            destinationType = navigator.camera.DestinationType;
         }
-        // Button Foto aufnehmen
+        // Kamera: Button Foto aufnehmen
         document.getElementById("btnTakePhoto").onclick = function () {
             handleCamera();
         };
-        //Button Foto löschen
+        // Kamera: Button Foto löschen 
         document.getElementById("btnDelPhoto").onclick = function () {
             window.localStorage.removeItem("photo1");
-            refreshPhoto();
+            refreshPhoto(); // Änderung aktualisieren
         };
 
-        //Location
+        // Standort: Button Location Update
         document.getElementById("btnUpdateLocation").onclick = function () {
             updateLocation();
         };
+        // Standort: Button Location löschen
         document.getElementById("btnDelLocation").onclick = function () {
             window.localStorage.removeItem("locLat1");
             window.localStorage.removeItem("locLong1");
             refreshLocation();
         };
 
-        //Google Maps
+        // Google Maps Button Karte anzeigen
         document.getElementById("btnShowMap").onclick = function () {
             displayRestaurantMap();
         };
 
+        // Defice Test: Button Vibrationstest
+        document.getElementById("btnVibrateTest").onclick = function () {
+            alert("Vibration clicked");
+            navigator.vibrate(3000);
+        };
     };
 
-
     /**
-    Nimmt ein Foto auf und sppeichert es in der Galerie des Geräts
+    Ruft die Native Kamera auf.
+    Beim Aufnehmen des Fotos durch den Nutz wird dieses in der Galerie des Geräts gespeichert.
     */
     function handleCamera() {
-        //alert("Launching Camera");
+        destinationType = navigator.camera.DestinationType;
         navigator.camera.getPicture(onCameraSuccess, onCameraFail, {
             quality: 75,
             destinationType: destinationType.FILE_URI,
@@ -61,12 +65,16 @@ var destinationType;
             encodingType: navigator.camera.EncodingType.JPEG
         });
     };
+
+    /**
+    onSuccess Funktion für die Kamera.
+    Ändert das angezeigt Bild auf das neue aufgenommene.
+    */
     function onCameraSuccess(imageData) {
         var lastPhotoContainer = document.getElementById("restaurantPhoto");
-        console.log("Bild geändert: -> " + imageData);
         lastPhotoContainer.src = imageData;
 
-        // Pfad des Fotos speichern
+        // Pfad des Fotos in Local Storage speichern
         window.localStorage.setItem("photo1", imageData);
 
     };
@@ -75,7 +83,7 @@ var destinationType;
     };
 
     /**
-    Ruft aktuelle Koordinaten ab und speichert diese
+    Ruft aktuelle Koordinaten ab,speichert diese und zeigt sie in der App an.
     */
     function updateLocation() {
         navigator.geolocation.getCurrentPosition(
@@ -83,16 +91,6 @@ var destinationType;
                 localStorage.setItem("locLat1", position.coords.latitude);
                 localStorage.setItem("locLong1", position.coords.longitude);
                 refreshLocation(); // Anzeige der Location neu laden
-                //    document.getElementById("location").innerHTML = position.coords.latitude + " , " + position.coords.longitude;
-                /* alert('Latitude: ' + position.coords.latitude + '\n' +
-            'Longitude: ' + position.coords.longitude + '\n' +
-            'Altitude: ' + position.coords.altitude + '\n' +
-            'Accuracy: ' + position.coords.accuracy + '\n' +
-            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-            'Heading: ' + position.coords.heading + '\n' +
-            'Speed: ' + position.coords.speed + '\n' +
-            'Timestamp: ' + position.timestamp + '\n');*/
-
             },
             function (error) {
                 alert('Error getting location:' + error.code + " , " + error.message);
@@ -110,12 +108,14 @@ var destinationType;
     };
 })();
 
-
+/**
+Aktualisiert das Foto in der App
+*/
 function refreshPhoto() {
     var currentPhoto = document.getElementById("restaurantPhoto");
     var savedPhoto = window.localStorage.getItem("photo1");
 
-    //Wenn es ein gespeichertes Foto gibt, dieses laden
+    // Wenn es ein gespeichertes Foto gibt, dieses laden
     if (savedPhoto != null) {
         currentPhoto.src = window.localStorage.getItem("photo1");
     } else { // Ansonsten "noimage" Foto anzeigen
@@ -124,45 +124,53 @@ function refreshPhoto() {
 };
 
 /**
-Gespeichertes Bild und Location laden
+Bei Initialisierung der Restaurant-Detailseite gespeichertes Bild und Location laden.
 */
 $(document).on("pageinit", "#restaurant", function () {
     refreshPhoto();
     refreshLocation();
 });
 
+/**
+Aktualisiert die Geolocation Anzeige in der App.
+*/
 function refreshLocation() {
     var currentLocLat = document.getElementById("locationLat");
     var currentLocLong = document.getElementById("locationLong");
     var savedLocLat = window.localStorage.getItem("locLat1");
     var savedLocLong = window.localStorage.getItem("locLong1");
 
-    if (savedLocLat != null) {
+
+    if (savedLocLat != null) { // Wenn gespeicherte Location-Latitude vorhanden diese anzeigen
         currentLocLat.innerHTML = "Latitude=" + savedLocLat;
-    } else { // Ansonsten "noimage" Foto anzeigen
+    } else { // Ansonsten keine Location Daten anzeigen
         currentLocLat.innerHTML = "No Latitude Data";
     }
-    if (savedLocLong != null) {
+    if (savedLocLong != null) { // Wenn gespeicherte Location-Longitude vorhanden diese anzeigen
         currentLocLong.innerHTML = "Longitude=" + savedLocLong;
-    } else { // Ansonsten "noimage" Foto anzeigen
+    } else { // Ansonsten keine Location Daten anzeigen
         currentLocLong.innerHTML = "No Longitude Data";
     }
 };
 
+/*
+Google Maps Karte anzeigen
+*/
 function displayRestaurantMap() {
-
     var lat = window.localStorage.getItem("locLat1");
     var long = window.localStorage.getItem("locLong1");
-    if (lat != null && long != null) {
+    if (lat != null && long != null) { // Wenn gespeicherte Koordinaten vorhanden, Karte zeichnen
         document.getElementById("map-canvas").hidden = false;
         document.getElementById("locErrArea").innerHTML = "";
         drawMap(new google.maps.LatLng(lat, long));
-    } else {
+    } else { // Ansonsten keine Daten anzeigen
         document.getElementById("map-canvas").hidden = true;
         document.getElementById("locErrArea").innerHTML = "No Location Data";
     }
 };
-
+/*
+Google Maps Karte zeichnen
+*/
 function drawMap(latlng) {
     var myOptions = {
         zoom: 10,
@@ -172,29 +180,26 @@ function drawMap(latlng) {
 
     var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
 
-    // Add an overlay to the map of current lat/lng
+    // Pin sitzen
     var marker = new google.maps.Marker({
         position: latlng,
         map: map,
-        title: "Greetings!"
+        title: "Pin"
     });
 };
 
-
+/*
+Initialisierung der Device-Test Seite
+*/
 $(document).on("pageinit", "#stuffHome", function () {
-    document.addEventListener("backbutton", onBackKeyDown, false);
-    document.addEventListener("menubutton", onMenuKeyDown, false);
-    document.addEventListener("volumedownbutton", onVolumeDownKeyDown, false);
-    document.addEventListener("volumeupbutton", onVolumeUpKeyDown, false);
-    window.addEventListener("batterystatus", onBatteryStatus, false);
+    // Eventlistener für Tasten des Geräts
+    document.addEventListener("backbutton", onBackKeyDown, false); // Zurück-Button
+    document.addEventListener("menubutton", onMenuKeyDown, false); // Menü-Button
+    document.addEventListener("volumedownbutton", onVolumeDownKeyDown, false); // Lautstärke leiser-Button
+    document.addEventListener("volumeupbutton", onVolumeUpKeyDown, false); // Lautstärker lauter-Button
+    window.addEventListener("batterystatus", onBatteryStatus, false); // Batterie + Ladezustand 
 
-    var onShake = function () {
-        var lastPhotoContainer1 = document.getElementById("gruselFoto");
-        lastPhotoContainer1.src = "images/grusel.png";
-        shake.stopWatch();
-    };
-    shake.startWatch(onShake, 30);
-
+    // Batteriestatus aktualisieren. Wird ausgelöst sobald sich der LAdezustand um mind. 1% ändert oder das Ladekabel an- oder abgesteckt wird
     function onBatteryStatus(info) {
         var status;
         status = "The Battery Level is <b>" + info.level + "</b>% and the cable is <b>";
@@ -208,29 +213,36 @@ $(document).on("pageinit", "#stuffHome", function () {
         status += "</b>";
         document.getElementById("pluggedStatus").innerHTML = status;
     }
+    // Slider auf 1 setzen, wenn LautstärkeKnopf-Lauter gedrückt wird
     function onVolumeUpKeyDown() {
-        //  var sliderValue = document.getElementById("slider-2").value;
-        // alert("old value " + document.getElementById("slider-2").value);
         $("#slider-2").val(1).slider("refresh");
-        //  alert("new value " + document.getElementById("slider-2").value);
     }
+    // Slider auf 0 setzen, wenn Lautstärkeknopf-Leiser gedrückt wird
     function onVolumeDownKeyDown() {
-        var sliderValue = document.getElementById("slider-2").value;
         $("#slider-2").val(0).slider("refresh");
     }
-
+    // Anzeigen, ob der Menüknopf auf dem Gerät gedrückt wurde
     function onMenuKeyDown() {
         alert("Menu key pressed");
     }
 
+    // Anzeigen, ob der zurück-Knopf auf dem Gerät gedrückt wurde
     function onBackKeyDown() {
         alert("Back button pressed");
     }
 
-    function checkConnection() {
-        var networkState = navigator.connection.type;
+    // Erkennen, ob das Gerät geschüttelt wurde
+    var onShake = function () {
+        alert("Device has been shaken");
+        shake.stopWatch();
+    };
+    shake.startWatch(onShake, 30);
 
-        var states = {};
+    // Verbindungsstatus anzeigen
+    function checkConnection() {
+        var networkState = navigator.connection.type; // Netzwerkstatus abrufen
+
+        var states = {}; //Übersetzung der entsprechenden Status
         states[Connection.UNKNOWN] = 'Unknown connection';
         states[Connection.ETHERNET] = 'Ethernet connection';
         states[Connection.WIFI] = 'WiFi connection';
@@ -239,53 +251,8 @@ $(document).on("pageinit", "#stuffHome", function () {
         states[Connection.CELL_4G] = 'Cell 4G connection';
         states[Connection.CELL] = 'Cell generic connection';
         states[Connection.NONE] = 'No network connection';
-
+        // Anzeige des Netzwerkstatus
         document.getElementById("networkStatus").innerHTML = "The device is connected via: <b>" + states[networkState] + "</b>";
     }
-
     checkConnection();
-
 });
-
-/**
-Google Maps
-*/
-/**
-$(document).on("pageinit", "#map-page", function () {
-    var defaultLatLng = new google.maps.LatLng(34.0983425, -118.3267434);  // Default to Hollywood, CA when no geolocation support
-
-    if (navigator.geolocation) {
-        function success(pos) {
-            // Location found, show map with these coordinates
-            drawMap(new google.maps.LatLng(window.localStorage.getItem("locLat1"), window.localStorage.getItem("locLong1")));
-        }
-
-        function fail(error) {
-            alert("No Location Data");
-            //  drawMap(defaultLatLng);  // Failed to find location, show default map
-        }
-
-        // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-        navigator.geolocation.getCurrentPosition(success, fail, { maximumAge: 500000, enableHighAccuracy: true, timeout: 6000 });
-    } else {
-        drawMap(defaultLatLng);  // No geolocation support, show default map
-    }
-
-    function drawMap(latlng) {
-        var myOptions = {
-            zoom: 10,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-        var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
-
-        // Add an overlay to the map of current lat/lng
-        var marker = new google.maps.Marker({
-            position: latlng,
-            map: map,
-            title: "Greetings!"
-        });
-    }
-    
-});*/
